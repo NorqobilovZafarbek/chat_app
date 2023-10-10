@@ -70,8 +70,9 @@ class ChatItem extends StatelessWidget {
             : CrossAxisAlignment.start;
 
     final time = data['timestamp'] as Timestamp;
+
     final String date =
-        '${time.toDate().year}/${time.toDate().month}/${time.toDate().day} ${time.toDate().hour}:${(time.toDate().minute).toString().padLeft(2, '0')}:${(time.toDate().second).toString().padLeft(2, '0')}';
+        '${time.toDate().year}/${time.toDate().month}/${time.toDate().day} ${time.toDate().hour}:${(time.toDate().minute).toString().padLeft(2, '0')}';
 
     return Container(
       alignment: alignment,
@@ -84,7 +85,7 @@ class ChatItem extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             Text(
-              '${data['senderEmail']}',
+              '${data['senderName']}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),

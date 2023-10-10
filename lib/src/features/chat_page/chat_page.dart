@@ -1,4 +1,5 @@
 import 'package:chat_app/src/common/widget/custom_text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'services/chat_service.dart';
@@ -22,6 +23,7 @@ class _ChatPageState extends State<ChatPage> {
   late final TextEditingController _messageController;
   late final ChatService _chatService;
   late final FirebaseAuth _auth;
+  late final FirebaseFirestore _firestore;
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _ChatPageState extends State<ChatPage> {
     _messageController = TextEditingController();
     _chatService = ChatService();
     _auth = FirebaseAuth.instance;
+    _firestore = FirebaseFirestore.instance;
   }
 
   @override
@@ -38,8 +41,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void sendMessage() async {
+    final userInfo =
+        await _firestore.collection('users').doc(_auth.currentUser!.uid).get();
     if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMessage(widget.userId, _messageController.text);
+      await _chatService.sendMessage(
+          userInfo['name'] as String, widget.userId, _messageController.text);
       _messageController.clear();
     }
   }
@@ -94,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
                       controller: _messageController,
                       textInputType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
-                      hintText: 'Write a message',
+                      hintText: 'Write a message...',
                       isObscure: false,
                     ),
                   ),
