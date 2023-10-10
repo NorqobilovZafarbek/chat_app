@@ -1,8 +1,10 @@
 import 'package:chat_app/src/features/auth_page/widgets/sign_in_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/widget/custom_button.dart';
 import '../../../common/widget/custom_text_field.dart';
+import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -32,11 +34,43 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  void signUp() {}
+  void signUp() async {
+    if (passwordController.text != passwordConfirmController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signUpWhithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Account has been created successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -46,8 +80,9 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
                 const Icon(
-                  Icons.message_rounded,
-                  size: 80,
+                  Icons.telegram,
+                  color: Colors.lightBlueAccent,
+                  size: 120,
                 ),
                 const SizedBox(height: 50),
                 const Text(
@@ -60,18 +95,22 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   controller: emailController,
+                  textInputType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   hintText: 'Email',
                   isObscure: false,
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
                   controller: passwordController,
+                  textInputAction: TextInputAction.next,
                   hintText: 'Password',
                   isObscure: true,
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
                   controller: passwordConfirmController,
+                  textInputAction: TextInputAction.done,
                   hintText: 'Confirm password',
                   isObscure: true,
                 ),
