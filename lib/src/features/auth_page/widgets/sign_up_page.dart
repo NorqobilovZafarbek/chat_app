@@ -1,4 +1,5 @@
 import 'package:chat_app/src/features/auth_page/widgets/sign_in_page.dart';
+import 'package:chat_app/src/features/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void signUp() async {
+    ScaffoldMessenger.of(context).clearSnackBars();
     if (passwordController.text != passwordConfirmController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -58,9 +60,21 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     } catch (e) {
+      String? message;
+      if (e.toString() == 'Exception: channel-error') {
+        message = 'Fill in the fields';
+      } else if (e.toString() == 'Exception: email-already-in-use') {
+        message = 'Email already in use';
+      } else if (e.toString() == 'Exception: invalid-email') {
+        message = 'Invalid email';
+      } else if (e.toString() == 'Exception: weak-password') {
+        message = 'Weak password';
+      } else {
+        message = e.toString();
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString()),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );

@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void signIn() async {
+    ScaffoldMessenger.of(context).clearSnackBars();
     final authService = Provider.of<AuthService>(context, listen: false);
 
     try {
@@ -40,9 +41,21 @@ class _LoginPageState extends State<LoginPage> {
         passwordController.text,
       );
     } catch (e) {
+      String? message;
+      if (e.toString() == 'Exception: channel-error') {
+        message = 'Fill in the fields';
+      } else if (e.toString() == 'Exception: INVALID_LOGIN_CREDENTIALS') {
+        message = 'Incorrect data entered';
+      } else if (e.toString() == 'Exception: invalid-email') {
+        message = 'Invalid email';
+      } else if (e.toString() == 'Exception: too-many-requests') {
+        message = 'Too many requests';
+      } else {
+        message = e.toString();
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.toString()),
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );
