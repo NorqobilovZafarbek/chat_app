@@ -7,9 +7,11 @@ class CustomTextField extends StatelessWidget {
     this.textInputAction,
     required this.hintText,
     required this.isObscure,
+    this.isChat = false,
     super.key,
   });
 
+  final bool isChat;
   final TextEditingController controller;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
@@ -24,6 +26,8 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       textInputAction: textInputAction,
       cursorColor: Colors.black,
+      minLines: 1,
+      maxLines: isChat ? 6 : 1,
       decoration: InputDecoration(
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(

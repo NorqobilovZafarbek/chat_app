@@ -14,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late final TextEditingController nameController;
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final TextEditingController passwordConfirmController;
@@ -21,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
+    nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     passwordConfirmController = TextEditingController();
@@ -28,6 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     passwordConfirmController.dispose();
@@ -52,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       await authService.signUpWhithEmailAndPassword(
+        nameController.text,
         emailController.text,
         passwordController.text,
         DateTime.now(),
@@ -116,6 +120,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                CustomTextField(
+                  controller: nameController,
+                  textInputType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  hintText: 'Name',
+                  isObscure: false,
+                ),
+                const SizedBox(height: 10),
                 CustomTextField(
                   controller: emailController,
                   textInputType: TextInputType.emailAddress,
