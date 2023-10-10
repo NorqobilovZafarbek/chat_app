@@ -1,5 +1,4 @@
 import 'package:chat_app/src/features/auth_page/widgets/sign_in_page.dart';
-import 'package:chat_app/src/features/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
     if (passwordController.text != passwordConfirmController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Passwords do not match'),
+          content: Text(
+            'Passwords do not match',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -52,10 +54,14 @@ class _RegisterPageState extends State<RegisterPage> {
       await authService.signUpWhithEmailAndPassword(
         emailController.text,
         passwordController.text,
+        DateTime.now(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Account has been created successfully'),
+          content: Text(
+            'Account has been created successfully',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Colors.green,
         ),
       );
@@ -74,7 +80,10 @@ class _RegisterPageState extends State<RegisterPage> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text(
+            message,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -141,6 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

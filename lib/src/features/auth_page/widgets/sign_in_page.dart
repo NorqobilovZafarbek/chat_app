@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       if (e.toString() == 'Exception: channel-error') {
         message = 'Fill in the fields';
       } else if (e.toString() == 'Exception: INVALID_LOGIN_CREDENTIALS') {
-        message = 'Incorrect data entered';
+        message = 'Incorrect data is entered or the account is not registered';
       } else if (e.toString() == 'Exception: invalid-email') {
         message = 'Invalid email';
       } else if (e.toString() == 'Exception: too-many-requests') {
@@ -55,7 +55,10 @@ class _LoginPageState extends State<LoginPage> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text(
+            message,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -115,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
