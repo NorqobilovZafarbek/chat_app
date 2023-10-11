@@ -86,18 +86,23 @@ class _ChatPageState extends State<ChatPage> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blueAccent,
+                      ),
                     ),
                   );
                 }
 
                 SchedulerBinding.instance?.addPostFrameCallback((_) {
-                  _scrollController.animateTo(
-                      _scrollController.position.maxScrollExtent,
-                      duration: const Duration(milliseconds: 1),
-                      curve: Curves.fastOutSlowIn);
+                  if (_scrollController.position.pixels ==
+                      _scrollController.position.maxScrollExtent) {
+                    _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 1),
+                        curve: Curves.fastOutSlowIn);
+                  }
                 });
 
                 return Expanded(
