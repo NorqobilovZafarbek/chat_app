@@ -29,17 +29,17 @@ class CustomTextField extends StatelessWidget {
       minLines: 1,
       maxLines: isChat ? 6 : 1,
       decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.white,
+            color: isChat ? Colors.transparent : Colors.white,
             width: 2,
           ),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.black,
-            width: 1,
+            color: Colors.blueAccent,
+            width: 2,
           ),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),

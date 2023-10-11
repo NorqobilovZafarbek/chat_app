@@ -18,8 +18,7 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, Object?> data = document?.data()! as Map<String, Object?>;
     if (_auth.currentUser?.email != data['email']) {
-      return ListTile(
-        title: Text('${data['name']}'),
+      return GestureDetector(
         onTap: () {
           Navigator.push(
             context,
@@ -31,6 +30,28 @@ class CustomListTile extends StatelessWidget {
             ),
           );
         },
+        child: SizedBox(
+          height: 75,
+          child: Card(
+            elevation: 5,
+            color: Colors.blue[400],
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '${data['name']}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       );
     }
     return const SizedBox.shrink();

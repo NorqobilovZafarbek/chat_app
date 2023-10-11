@@ -1,7 +1,7 @@
+import 'package:chat_app/src/features/auth_page/login_or_signin.dart';
 import 'package:chat_app/src/features/auth_page/services/auth_service.dart';
 import 'package:chat_app/src/features/home_page/widgets/custom_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   void signOut() {
     final authService = Provider.of<AuthService>(context, listen: false);
 
@@ -24,12 +22,29 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Peoples'),
+        backgroundColor: Colors.blueAccent,
+        title: const Text(
+          'Peoples',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
-            onPressed: signOut,
-            icon: const Icon(Icons.logout_outlined),
+            onPressed: () {
+              signOut();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginOrRegister(),
+                  ),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.logout_outlined,
+              size: 26,
+              color: Colors.white,
+            ),
           )
         ],
       ),
@@ -53,24 +68,9 @@ class _HomePageState extends State<HomePage> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListView.separated(
+            child: ListView.builder(
               itemBuilder: (context, index) {
                 return CustomListTile(document: snapshot.data?.docs[index]);
-              },
-              separatorBuilder: (context, index) {
-                Map<String, Object?> data =
-                    snapshot.data?.docs[index].data()! as Map<String, Object?>;
-                if (_auth.currentUser?.email != data['email']) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Divider(
-                      height: 1,
-                      color: Colors.black,
-                    ),
-                  );
-                }
-
-                return const SizedBox.shrink();
               },
               itemCount: snapshot.data?.docs.length ?? 0,
             ),

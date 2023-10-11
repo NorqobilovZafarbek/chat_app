@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/widget/custom_button.dart';
 import '../../../common/widget/custom_text_field.dart';
+import '../../home_page/home_page.dart';
 import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -60,6 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordController.text,
         DateTime.now(),
       );
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -69,6 +71,13 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.green,
         ),
       );
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+          (route) => false);
     } catch (e) {
       String? message;
       if (e.toString() == 'Exception: channel-error') {
@@ -105,13 +114,12 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
                 const Icon(
                   Icons.telegram,
-                  color: Colors.lightBlueAccent,
+                  color: Colors.blueAccent,
                   size: 120,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 20),
                 const Text(
                   'Let\'s create an account for you!',
                   style: TextStyle(

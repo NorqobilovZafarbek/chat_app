@@ -1,4 +1,5 @@
 import 'package:chat_app/src/features/auth_page/services/auth_service.dart';
+import 'package:chat_app/src/features/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,13 @@ class _LoginPageState extends State<LoginPage> {
         emailController.text,
         passwordController.text,
       );
+
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+          (route) => false);
     } catch (e) {
       String? message;
       if (e.toString() == 'Exception: channel-error') {
@@ -53,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         message = e.toString();
       }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -76,11 +85,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
                 const Icon(
                   Icons.telegram,
-                  color: Colors.lightBlueAccent,
-                  size: 120,
+                  color: Colors.blueAccent,
+                  size: 150,
                 ),
                 const SizedBox(height: 50),
                 const Text(

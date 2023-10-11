@@ -8,21 +8,21 @@ class Bubble extends StatelessWidget {
     required this.text,
     required this.time,
     required this.crossAxisAlignment,
+    required this.borderRadius,
   });
 
   final String text;
   final String time;
   final CrossAxisAlignment crossAxisAlignment;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.all(
-          Radius.circular(8),
-        ),
+      decoration: BoxDecoration(
+        color: Colors.blueAccent,
+        borderRadius: borderRadius,
       ),
       child: Column(
         crossAxisAlignment: crossAxisAlignment,
@@ -31,13 +31,15 @@ class Bubble extends StatelessWidget {
             text,
             style: const TextStyle(
               color: Colors.white,
+              fontSize: 17,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Text(
             time,
             style: const TextStyle(
               color: Colors.white,
+              fontSize: 12,
             ),
           ),
         ],
@@ -69,6 +71,18 @@ class ChatItem extends StatelessWidget {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start;
 
+    BorderRadius borderRadius = (data['senderId'] == _auth.currentUser!.uid)
+        ? const BorderRadius.only(
+            topLeft: Radius.circular(13),
+            topRight: Radius.circular(13),
+            bottomLeft: Radius.circular(13),
+          )
+        : const BorderRadius.only(
+            topLeft: Radius.circular(13),
+            topRight: Radius.circular(13),
+            bottomRight: Radius.circular(13),
+          );
+
     final time = data['timestamp'] as Timestamp;
 
     final String date =
@@ -88,12 +102,15 @@ class ChatItem extends StatelessWidget {
               '${data['senderName']}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
             ),
+            const SizedBox(height: 2),
             Bubble(
               text: '${data['message']}',
               time: date,
               crossAxisAlignment: crossAxisAlignment,
+              borderRadius: borderRadius,
             )
           ],
         ),

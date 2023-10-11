@@ -17,7 +17,7 @@ class Message {
     required this.timestamp,
   });
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toJson() {
     return {
       'senderName': senderName,
       'senderId': senderId,
